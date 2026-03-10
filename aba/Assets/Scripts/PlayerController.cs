@@ -9,10 +9,14 @@ public class PlayerController : MonoBehaviour
     public float xRange = 15f;
     public GameObject projectilePrefab;
     public float horizontalInput;
+    public InputActionAsset InputActions;
+    private InputAction moveAction;
+    private InputAction fireAction;
 
     // Update is called once per frame
     void Update()
     {
+        horizontalInput = moveAction.ReadValue<Vector2>().x;
         // float horizontalInput = Input.GetAxis("Horizontal");
         // movimenta o player para esquerda e direita a partir da entrada do usu�rio
         transform.Translate(Vector3.right * speed * Time.deltaTime * horizontalInput);
@@ -25,20 +29,27 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector3(xRange, transform.position.y, transform.position.y);
         }
-    }
 
-    public void MoveEvent(InputAction.CallbackContext context)
-    {
-        horizontalInput = context.ReadValue<Vector2>().x;
-    }
-
-    public void FireInput(InputAction.CallbackContext context)
-    {
-        if(context.performed)
+        if(fireAction.WasPressedThisFrame())
         {
             Debug.Log("Dispara pizza");
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         }
-        
+    }
+
+    private void Awake()
+    {
+        moveAction = InputSystem.actions.FindAction("move");
+        fireAction = InputSystem.actions.FindAction("fire");
+    }
+
+    private void OnEnable()
+    {
+        InputActions.FindActionMap("Player").Enable();
+    }
+
+    private void OnDisable()
+    {
+        InputActions.FindActionMap("Player").Disable();
     }
 }
