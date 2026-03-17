@@ -13,6 +13,8 @@ public class PlayerControllerEx7 : MonoBehaviour
     public InputActionAsset inputActions;
     private InputAction moveAction;
     private InputAction fireAction;
+    private InputAction pauseAction;
+    private InputAction unpauseAction;
 
     // Update is called once per frame
     void Update()
@@ -34,6 +36,18 @@ public class PlayerControllerEx7 : MonoBehaviour
         if (fireAction.WasPressedThisFrame())
         {
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+        }
+
+        if (pauseAction.WasPressedThisFrame())
+        {
+            inputActions.FindActionMap("Player").Disable();
+            inputActions.FindActionMap("UI").Enable();
+        }
+
+        if (unpauseAction.WasPressedThisFrame())
+        {
+            inputActions.FindActionMap("UI").Disable();
+            inputActions.FindActionMap("Player").Enable();
         }
     }
 
@@ -68,5 +82,7 @@ public class PlayerControllerEx7 : MonoBehaviour
     {
         moveAction = InputSystem.actions.FindAction("Move");
         fireAction = InputSystem.actions.FindAction("Jump");
+        pauseAction = InputSystem.actions.FindAction("Pause");
+        unpauseAction = InputSystem.actions.FindAction("Unpause");
     }
 }
