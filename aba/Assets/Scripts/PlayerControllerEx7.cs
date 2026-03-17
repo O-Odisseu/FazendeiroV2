@@ -6,16 +6,24 @@ using UnityEngine.InputSystem;
 public class PlayerControllerEx7 : MonoBehaviour
 {
     public float speed = 20f;
-    public float xRange = 15f;
+    public float xRange = 17.5f;
     public GameObject projectilePrefab;
     public float horizontalInput;
+    public Renderer rend;
 
     public InputActionAsset inputActions;
     private InputAction moveAction;
     private InputAction fireAction;
+    private InputAction ghostAction;
+
     private InputAction pauseAction;
     private InputAction unpauseAction;
 
+    void Start()
+    {
+        rend = GetComponent<Renderer>();
+        rend.enabled = true;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -38,6 +46,11 @@ public class PlayerControllerEx7 : MonoBehaviour
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         }
 
+        if (ghostAction.WasPressedThisFrame())
+        {
+            rend.enabled = false;
+        }
+
         if (pauseAction.WasPressedThisFrame())
         {
             inputActions.FindActionMap("Player").Disable();
@@ -51,37 +64,12 @@ public class PlayerControllerEx7 : MonoBehaviour
         }
     }
 
-    /*
-    public void MoveEvent(InputAction.CallbackContext context)
-    {
-        horizontalInput = context.ReadValue<Vector2>().x;
-    }
-
-    public void FireInput(InputAction.CallbackContext context)
-    {
-        if(context.performed)
-        {
-            Debug.Log("Dispara pizza");
-            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
-        }
-        
-    }
-    */
-
-    private void OnEnable()
-    {
-        inputActions.FindActionMap("Player").Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.FindActionMap("Player").Disable();
-    }
-
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         fireAction = InputSystem.actions.FindAction("Jump");
+        ghostAction = InputSystem.actions.FindAction("Ghost");
+
         pauseAction = InputSystem.actions.FindAction("Pause");
         unpauseAction = InputSystem.actions.FindAction("Unpause");
     }
