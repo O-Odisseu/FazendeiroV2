@@ -7,22 +7,19 @@ public class PlayerControllerEx7 : MonoBehaviour
 {
     public float speed = 20f;
     public float xRange = 17.5f;
+    public int vida = 3;
     public GameObject projectilePrefab;
     public float horizontalInput;
-    public Renderer rend;
 
     public InputActionAsset inputActions;
     private InputAction moveAction;
     private InputAction fireAction;
-    private InputAction ghostAction;
-
     private InputAction pauseAction;
     private InputAction unpauseAction;
 
     void Start()
     {
-        rend = GetComponent<Renderer>();
-        rend.enabled = true;
+        
     }
     // Update is called once per frame
     void Update()
@@ -46,11 +43,6 @@ public class PlayerControllerEx7 : MonoBehaviour
             Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
         }
 
-        if (ghostAction.WasPressedThisFrame())
-        {
-            rend.enabled = false;
-        }
-
         if (pauseAction.WasPressedThisFrame())
         {
             inputActions.FindActionMap("Player").Disable();
@@ -68,9 +60,17 @@ public class PlayerControllerEx7 : MonoBehaviour
     {
         moveAction = InputSystem.actions.FindAction("Move");
         fireAction = InputSystem.actions.FindAction("Jump");
-        ghostAction = InputSystem.actions.FindAction("Ghost");
 
         pauseAction = InputSystem.actions.FindAction("Pause");
         unpauseAction = InputSystem.actions.FindAction("Unpause");
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Animal")
+        {
+            vida -= 1;
+            print(vida);
+        }
+    }   
 }
