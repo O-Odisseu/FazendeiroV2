@@ -8,6 +8,7 @@ public class InvisibleMaterials : MonoBehaviour
     public Material farmer;
     //public Color invis;
     private InputAction ghostAction;
+    private IEnumerator coroutine;
     private float timer;
 
     void Start()
@@ -18,21 +19,13 @@ public class InvisibleMaterials : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (ghostAction.WasPressedThisFrame() && timer > 0)
         {
-            farmer.color = new Color(farmer.color.r, farmer.color.g, farmer.color.b, 0.1f);
-            timer = 0.0f;
-            GetComponent<BoxCollider>().enabled = false;
+            StartCoroutine("Invisibility");
         }
 
         timer += Time.deltaTime;
-
-        if (timer > 3.0f)
-        {
-            timer = -8.0f;
-            farmer.color = new Color(farmer.color.r, farmer.color.g, farmer.color.b, 1.0f);
-            GetComponent<BoxCollider>().enabled = true;
-        }
     }
 
     private void Awake()
@@ -40,6 +33,18 @@ public class InvisibleMaterials : MonoBehaviour
         ghostAction = InputSystem.actions.FindAction("Ghost");
     }
 
+    IEnumerator Invisibility()
+    {
+        farmer.color = new Color(farmer.color.r, farmer.color.g, farmer.color.b, 0.08f);
+        timer = 0.0f;
+        GetComponent<BoxCollider>().enabled = false;
+
+        yield return new WaitForSeconds(2);
+
+        timer = -5.0f;
+        farmer.color = new Color(farmer.color.r, farmer.color.g, farmer.color.b, 1.0f);
+        GetComponent<BoxCollider>().enabled = true;
+    }
 }
 
 
