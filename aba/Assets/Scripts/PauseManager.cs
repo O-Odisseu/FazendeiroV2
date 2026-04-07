@@ -10,7 +10,7 @@ public class PauseManager : MonoBehaviour
     private InputAction pauseAction;
     private InputAction unpauseAction;
     public GameObject pause;
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -30,6 +30,5 @@ public class PauseManager : MonoBehaviour
         pauseAction = InputSystem.actions.FindAction("Pause");
         unpauseAction = InputSystem.actions.FindAction("Unpause");
     }
-    
 }
 
