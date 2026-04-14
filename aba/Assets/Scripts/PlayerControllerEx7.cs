@@ -8,8 +8,10 @@ public class PlayerControllerEx7 : MonoBehaviour
     public float speed = 20f;
     public float xRange = 17.5f;
     public int vida = 3;
+    public int pontuacao = 0;
     public GameObject projectilePrefab;
     public float horizontalInput;
+    public DetectCollisions points;
 
     public InputActionAsset inputActions;
     private InputAction moveAction;
@@ -29,6 +31,7 @@ public class PlayerControllerEx7 : MonoBehaviour
         // movimenta o player para esquerda e direita a partir da entrada do usu�rio
         transform.Translate(Vector3.right * speed * Time.deltaTime * horizontalInput);
         // mant�m o player dentro dos limites do jogo (eixo x)
+
         if (transform.position.x < -xRange)
         {
             transform.position = new Vector3(-xRange, transform.position.y, transform.position.y);
@@ -53,6 +56,16 @@ public class PlayerControllerEx7 : MonoBehaviour
         {
             inputActions.FindActionMap("UI").Disable();
             inputActions.FindActionMap("Player").Enable();
+        }
+
+        if (vida <= 0)
+        {
+            Destroy(gameObject);
+        }
+
+        if(points.colissioncheck)
+        {
+            pontuacao += 1;
         }
     }
 

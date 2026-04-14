@@ -9,6 +9,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject painelMenuPrincipal;
     [SerializeField] private GameObject painelOpcoes;
 
+    [SerializeField] private GameObject painelSaida;
+
     public void Jogar()
     {
         SceneManager.LoadScene(nomedafase);
@@ -26,9 +28,21 @@ public class MainMenuManager : MonoBehaviour
         painelMenuPrincipal.SetActive(true);
     }
 
-    public void Sair()
+    public void Saida()
     {
-        print("Saindo do jogo.");
+        painelMenuPrincipal.SetActive(false);
+        painelSaida.SetActive(true);
+    }
+
+    public void FecharSaida()
+    {
+        painelSaida.SetActive(false);
+        painelMenuPrincipal.SetActive(true);
+    }
+
+    public void Fechar()
+    {
         Application.Quit();
+        print("Ok! saindo agora.");
     }
 }
