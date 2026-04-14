@@ -11,6 +11,11 @@ public class PauseManager : MonoBehaviour
     private InputAction unpauseAction;
     public GameObject pause;
 
+    void Start()
+    {
+        pause.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
